@@ -5,6 +5,26 @@ var Guy = function(){
   this.r = 10;
 };
 
+Guy.prototype.setX = function (cx) {
+  if ( cx > axes.x(95) ) {
+    this.cx = axes.x(95);
+  } else if ( cx < axes.x(5)) {
+    this.cx = axes.x(5);
+  } else {
+    this.cx = cx;
+  }
+};
+
+Guy.prototype.setY = function (cy) {
+  if ( cy > axes.y(95) ) {
+    this.cy = axes.y(95);
+  } else if ( cy < axes.y(5)) {
+    this.cy = axes.y(5);
+  } else {
+    this.cy = cy;
+  }
+};
+
 
 var GoodGuy = function() {
   Guy.call(this);
@@ -21,14 +41,13 @@ GoodGuy.prototype.render = function(){
                     .attr('fill', this.fill);
 
 
-  var _this = this;
+  var self = this;
   var dragMove = function() {
-    //debugger;
-    _this.cx += d3.event.dx;
-    _this.cy += d3.event.dy;
+    self.setX(self.cx  + d3.event.dx);
+    self.setY(self.cy + d3.event.dy);
 
-    _this.element.attr('cx', _this.cx);
-    _this.element.attr('cy', _this.cy);
+    self.element.attr('cx', self.cx);
+    self.element.attr('cy', self.cy);
   };
 
   drag = d3.behavior.drag().on('drag', dragMove);
@@ -40,7 +59,7 @@ GoodGuy.prototype.render = function(){
 var BadGuy = function(i){
   Guy.call(this);
   this.id = i;
-  this.fill = '#000000';
+  this.fill = 'url(#image)';
   this.cx = getRandom(axes.x);
   this.cy = getRandom(axes.y);
 };
